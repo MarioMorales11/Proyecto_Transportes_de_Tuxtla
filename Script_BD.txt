@@ -1,0 +1,41 @@
+
+CREATE TABLE cliente(
+no_cliente number(4) primary key, nombre varchar2(45), apellidos varchar2(45), telefono number(10), direccion varchar2(100), 
+correo varchar2(80), password varchar2(25)
+);
+
+CREATE TABLE lineas(
+no_linea number(5) primary key, nombre varchar2(50), telefono number(10), correo varchar2(80), modulo number(5)
+);
+
+CREATE TABLE destino(
+no_destino number(5) primary key, nombre varchar2(100), 
+no_cliente number(4),
+foreign key(no_cliente) references cliente(no_cliente)
+);
+
+CREATE TABLE horarios(
+no_horario number(5) primary key, costo number(5,2), fecha date,
+no_destino number(5),
+foreign key (no_destino) references destino(no_destino)
+);
+
+CREATE TABLE venta(
+no_venta number(4) primary key, forma_pago varchar2(50), 
+no_horario number(5),
+foreign key(no_horario) references horarios(no_horario)
+);
+
+CREATE TABLE autobus(
+no_autobus number(5) primary key, marca varchar2(30), modelo varchar2(30), chofer varchar2(100), capacidad number(35),
+no_linea number(5), no_horario number(5),
+foreign key (no_linea) references lineas(no_linea),
+foreign key (no_horario) references horarios(no_horario)
+);
+
+CREATE TABLE desglose(
+desglose number(4) primary key, no_autobus number(5), no_destino number(5), no_venta number(4),
+foreign key(no_autobus) references autobus(no_autobus),
+foreign key(no_destino) references destino(no_destino),
+foreign key(no_venta) references venta(no_venta)
+);
